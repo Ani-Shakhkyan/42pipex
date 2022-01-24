@@ -2,7 +2,7 @@ NAME = pipex
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 HEADER = pipex.h
-SRC = pipex.c resources.c
+SRC = {wildcard *.c}
 OBJ = $(SRC:c=o)
 all: $(NAME)
 

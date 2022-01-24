@@ -1,9 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ashakhky <ashakhky@student.42yerevan.am>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/01/24 16:01:07 by ashakhky          #+#    #+#             */
+/*   Updated: 2022/01/24 16:01:47 by ashakhky         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
-#include <stdio.h>
 
 char	*find_path(char *first, char **envp)
 {
-	int	i;
+	int		i;
 	char	*path;
 	char	*temp;
 	char	*command;
@@ -14,16 +25,19 @@ char	*find_path(char *first, char **envp)
 		if (!ft_strncmp(envp[i], "PATH=", 5))
 		{
 			path = envp[i] + 5;
-			temp = ft_strndup(path, ft_strchr(path,':'));
-			command = ft_strjoin(temp, first);
-			if (!access(command, F_OK))
+			while (*path)
 			{
+				temp = ft_strndup(path, ft_strchr(path, ':') - 1);
+				command = ft_strjoin(temp, first);
+				if (!access(command, F_OK))
+				{
+					free(temp);
+					return (command);
+				}
 				free(temp);
-				return (command);
+				free(command);
+				path += ft_strchr(path, ':');
 			}
-			free(temp);
-			free(command);
-			path += ft_strchr(path, ':');
 		}
 		i++;
 	}
@@ -32,23 +46,22 @@ char	*find_path(char *first, char **envp)
 
 void	execute(char *cmd, char **envp)
 {
-	char	**commands;
+	char	**args;
 	char	*path;
 
-	commands = ft_split(cmd, ' ');
-	if (commands[0][0] == '/')
-		path = commands[0];
+	args = ft_split(cmd, ' ');
+	if (args[0][0] == '/')
+		path = args[0];
 	else
-		path = find_path(commands[0], envp);
-	execve(path, commands, envp);
-	//printf("path is:%s\n", path);
+		path = find_path(args[0], envp);
+	execve(path, args, envp);
 	write(2, "Command could not be found\n", 27);
 	exit(127);
 }
 
 void	first_cmd(int input_fd, char *cmd, char **envp)
 {
-	int	pfd[2];
+	int		pfd[2];
 	pid_t	pid;
 
 	pipe(pfd);
@@ -66,17 +79,16 @@ void	first_cmd(int input_fd, char *cmd, char **envp)
 	{
 		close(pfd[1]);
 		dup2(pfd[0], 0);
-		waitpid(pid, NULL, 0);
 	}
 }
 
-int main(int argc, char **argv, char** envp)
+int	main(int argc, char **argv, char** envp)
 {
+	int	input;
+	int output;
+
 	if (argc == 5)
 	{
-		int input;
-		int output;
-
 		input = open(argv[1], O_RDONLY);
 		output = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC,
 				S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH);

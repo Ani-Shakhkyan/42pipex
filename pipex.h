@@ -14,5 +14,6 @@ int		ft_strncmp (char *str1, char *str2, int n);
 int		ft_strchr (char *str, char c);
 char	*ft_strndup (char *str, unsigned int n);
 char	**ft_split (char *str, char sep);
+size_t	ft_strlen(const char *str);
 
 #endif

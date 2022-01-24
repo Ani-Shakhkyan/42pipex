@@ -1,12 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   resources1.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ashakhky <ashakhky@student.42yerevan.am>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/01/24 16:23:54 by ashakhky          #+#    #+#             */
+/*   Updated: 2022/01/24 16:25:19 by ashakhky         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
 
-char	*ft_strjoin (char *path, char *bin)
+char	*ft_strjoin(char *path, char *bin)
 {
 	char	*joined;
 	int		i;
 	int		j;
 
-	joined = malloc(sizeof(char) * (ft_strchr(path, 0) + ft_strchr(bin, 0) + 2));
+	joined = malloc(sizeof(char) * (ft_strchr(path, 0)
+				+ ft_strchr(bin, 0) + 2));
 	i = 0;
 	j = 0;
 	while (path[j])
@@ -43,10 +56,10 @@ int	ft_strchr(char *str, char c)
 	return (ft_strlen(str));
 }
 
-char	*ft_strndup (char *str, unsigned int n)
+char	*ft_strndup(char *str, unsigned int n)
 {
-	char				*duped;
-	unsigned int		i;
+	char			*duped;
+	unsigned int	i;
 
 	i = 0;
 	duped = malloc(sizeof(char) * (n + 1));
@@ -56,7 +69,7 @@ char	*ft_strndup (char *str, unsigned int n)
 	return (duped);
 }
 
-char	**ft_split (char *str, char sep)
+char	**ft_split(char *str, char sep)
 {
 	char	**tab;
 	int		count;

@@ -6,38 +6,46 @@
 /*   By: ashakhky <ashakhky@student.42yerevan.am>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 16:01:07 by ashakhky          #+#    #+#             */
-/*   Updated: 2022/01/24 16:01:47 by ashakhky         ###   ########.fr       */
+/*   Updated: 2022/01/24 16:22:26 by ashakhky         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+char	*ft_traverse_path(char *path)
+{
+	char	*temp;
+	char	*command;
+
+	while (*path)
+	{
+		temp = ft_strndup(path, ft_strchr(path, ':') - 1);
+		command = ft_strjoin(temp, first);
+		if (!access(command, F_OK))
+		{
+			free(temp);
+			return (command);
+		}
+		free(temp);
+		free(command);
+		path += ft_strchr(path, ':');
+	}
+	return (NULL);
+}
+
 char	*find_path(char *first, char **envp)
 {
 	int		i;
-	char	*path;
-	char	*temp;
-	char	*command;
+	char	*cmd;
 
 	i = 0;
 	while (envp[i])
 	{
 		if (!ft_strncmp(envp[i], "PATH=", 5))
 		{
-			path = envp[i] + 5;
-			while (*path)
-			{
-				temp = ft_strndup(path, ft_strchr(path, ':') - 1);
-				command = ft_strjoin(temp, first);
-				if (!access(command, F_OK))
-				{
-					free(temp);
-					return (command);
-				}
-				free(temp);
-				free(command);
-				path += ft_strchr(path, ':');
-			}
+			cmd = ft_traverse_path(envp[i] + 5);
+			if (cmd)
+				return (cmd);
 		}
 		i++;
 	}
@@ -82,10 +90,10 @@ void	first_cmd(int input_fd, char *cmd, char **envp)
 	}
 }
 
-int	main(int argc, char **argv, char** envp)
+int	main(int argc, char **argv, char **envp)
 {
 	int	input;
-	int output;
+	int	output;
 
 	if (argc == 5)
 	{

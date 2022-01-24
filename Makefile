@@ -1,8 +1,20 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: ashakhky <ashakhky@student.42yerevan.am>   +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/01/24 16:25:51 by ashakhky          #+#    #+#              #
+#    Updated: 2022/01/24 16:25:53 by ashakhky         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = pipex
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 HEADER = pipex.h
-SRC = {wildcard *.c}
+SRC = ${wildcard *.c}
 OBJ = $(SRC:c=o)
 all: $(NAME)
 

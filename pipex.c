@@ -6,13 +6,13 @@
 /*   By: ashakhky <ashakhky@student.42yerevan.am>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 16:01:07 by ashakhky          #+#    #+#             */
-/*   Updated: 2022/01/24 16:22:26 by ashakhky         ###   ########.fr       */
+/*   Updated: 2022/01/25 11:24:25 by ashakhky         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	*ft_traverse_path(char *path)
+char	*ft_traverse_path(char *first, char *path)
 {
 	char	*temp;
 	char	*command;
@@ -43,7 +43,7 @@ char	*find_path(char *first, char **envp)
 	{
 		if (!ft_strncmp(envp[i], "PATH=", 5))
 		{
-			cmd = ft_traverse_path(envp[i] + 5);
+			cmd = ft_traverse_path(first, envp[i] + 5);
 			if (cmd)
 				return (cmd);
 		}
